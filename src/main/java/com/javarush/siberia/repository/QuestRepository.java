@@ -11,49 +11,49 @@ public class QuestRepository {
     static {
         Map<String, QuestStep> defaultQuest = new HashMap<>();
         defaultQuest.put("start", new QuestStep(
-                "Р’С‹ РЅР°С…РѕРґРёС‚РµСЃСЊ РІ С‚РµРјРЅРѕРј Р»РµСЃСѓ. РљСѓРґР° РїРѕР№РґРµС‚Рµ?",
+                "Вы находитесь в темном лесу. Куда пойдете?",
                 "images/step1.jpg",
-                "РќР° РЎРµРІРµСЂ", "РќР° Р®Рі",
+                "На Север", "На Юг",
                 "north", "south",
                 false, false
         ));
         defaultQuest.put("north", new QuestStep(
-                "Р’С‹ РїСЂРёС€Р»Рё Рє РѕР·РµСЂСѓ. Р’С‹РїСЊРµС‚Рµ РІРѕРґС‹?",
+                "Вы пришли к озеру. Выпьете воды?",
                 "images/step2_north.jpg",
-                "Р”Р°, РІС‹РїРёС‚СЊ", "РќРµС‚, СѓР№С‚Рё",
+                "Да, выпить", "Нет, уйти",
                 "drink", "ignore",
                 false, false
         ));
         defaultQuest.put("south", new QuestStep(
-                "Р’С‹ РІСЃС‚СЂРµС‚РёР»Рё РіРѕР±Р»РёРЅР°. Р‘СѓРґРµС‚Рµ СЃСЂР°Р¶Р°С‚СЊСЃСЏ?",
+                "Вы встретили гоблина. Будете сражаться?",
                 "images/step2_south.jpg",
-                "РЎСЂР°Р¶Р°С‚СЊСЃСЏ", "РЈР±РµР¶Р°С‚СЊ",
+                "Сражаться", "Убежать",
                 "fight", "run",
                 false, false
         ));
         defaultQuest.put("drink", new QuestStep(
-                "Р’РѕРґР° РѕРєР°Р·Р°Р»Р°СЃСЊ РІРѕР»С€РµР±РЅРѕР№! Р’С‹ РїРѕР±РµРґРёР»Рё!",
+                "Вода оказалась волшебной! Вы победили!",
                 "images/victory.jpg",
                 null, null,
                 null, null,
                 true, true
         ));
         defaultQuest.put("ignore", new QuestStep(
-                "Р’С‹ СѓС€Р»Рё Рё Р·Р°Р±Р»СѓРґРёР»РёСЃСЊ. РџРѕСЂР°Р¶РµРЅРёРµ.",
+                "Вы ушли и заблудились. Поражение.",
                 "images/defeat.jpg",
                 null, null,
                 null, null,
                 true, false
         ));
         defaultQuest.put("fight", new QuestStep(
-                "Р“РѕР±Р»РёРЅ РѕРєР°Р·Р°Р»СЃСЏ СЃР»Р°Р±. Р’С‹ РїРѕР±РµРґРёР»Рё!",
+                "Гоблин оказался слаб. Вы победили!",
                 "images/victory.jpg",
                 null, null,
                 null, null,
                 true, true
         ));
         defaultQuest.put("run", new QuestStep(
-                "Р’С‹ Р±РµР¶Р°Р»Рё С‚Р°Рє Р±С‹СЃС‚СЂРѕ, С‡С‚Рѕ СѓРїР°Р»Рё РІ РїСЂРѕРїР°СЃС‚СЊ. РџРѕСЂР°Р¶РµРЅРёРµ.",
+                "Вы бежали так быстро, что упали в пропасть. Поражение.",
                 "images/defeat.jpg",
                 null, null,
                 null, null,

@@ -12,7 +12,6 @@ public class SessionUtil {
     }
 
     public static void startQuest(HttpSession session, String questId) {
-        // РќР°С‡РёРЅР°РµРј СЃ С€Р°РіР° "start"
         QuestState state = new QuestState(questId, "start");
         session.setAttribute("questState", state);
     }

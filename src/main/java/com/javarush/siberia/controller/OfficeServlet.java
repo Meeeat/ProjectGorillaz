@@ -19,7 +19,7 @@ public class OfficeServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = (User)req.getSession().getAttribute("user");
         if (user == null || (user.getRole() != Role.AUTHOR && user.getRole() != Role.ADMIN)) {
-            resp.sendError(HttpServletResponse.SC_FORBIDDEN, "РќРµС‚ РґРѕСЃС‚СѓРїР°");
+            resp.sendError(HttpServletResponse.SC_FORBIDDEN, "No access");
             return;
         }
         req.getRequestDispatcher("/WEB-INF/office.jsp").forward(req, resp);
@@ -29,7 +29,7 @@ public class OfficeServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         User user = (User)req.getSession().getAttribute("user");
         if (user == null || (user.getRole() != Role.AUTHOR && user.getRole() != Role.ADMIN)) {
-            resp.sendError(HttpServletResponse.SC_FORBIDDEN, "РќРµС‚ РґРѕСЃС‚СѓРїР°");
+            resp.sendError(HttpServletResponse.SC_FORBIDDEN, "No access");
             return;
         }
 
@@ -37,7 +37,7 @@ public class OfficeServlet extends HttpServlet {
         if ("createQuest".equals(action)) {
             String questId = req.getParameter("questId");
             questService.addQuest(questId);
-            req.setAttribute("message", "РљРІРµСЃС‚ " + questId + " СЃРѕР·РґР°РЅ!");
+            req.setAttribute("message", "Quest " + questId + " created!");
         } else if ("addStep".equals(action)) {
             String questId = req.getParameter("questId");
             String stepId = req.getParameter("stepId");
@@ -51,7 +51,7 @@ public class OfficeServlet extends HttpServlet {
             boolean isVictory = "on".equals(req.getParameter("victory"));
 
             questService.addStep(questId, stepId, text, imagePath, option1, option2, next1, next2, isEnd, isVictory);
-            req.setAttribute("message", "РЁР°Рі " + stepId + " РґРѕР±Р°РІР»РµРЅ РІ РєРІРµСЃС‚ " + questId);
+            req.setAttribute("message", "Step " + stepId + " added to quest " + questId);
         }
         req.getRequestDispatcher("/WEB-INF/office.jsp").forward(req, resp);
     }
