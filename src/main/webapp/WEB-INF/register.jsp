@@ -1,0 +1,35 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<%
+    String error = (String)request.getAttribute("error");
+    request.setAttribute("title", "Регистрация");
+%>
+
+<%@ include file="parts/header.jsp" %>
+
+<h1 class="mb-4">Регистрация</h1>
+<form method="post" action="register">
+    <div class="mb-3">
+        <label>Имя пользователя:</label>
+        <input type="text" name="username" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label>Пароль:</label>
+        <input type="password" name="password" class="form-control">
+    </div>
+    <div class="mb-3">
+        <label>Роль:</label>
+        <select name="role" class="form-select">
+            <option value="USER">USER</option>
+            <option value="AUTHOR">AUTHOR</option>
+            <option value="ADMIN">ADMIN</option>
+        </select>
+    </div>
+    <input type="submit" value="Зарегистрироваться" class="btn btn-primary">
+</form>
+<% if (error != null) { %>
+<div class="alert alert-danger mt-3"><%=error%></div>
+<% } %>
+<a href="/" class="btn btn-secondary mt-3">На главную</a>
+
+<%@ include file="parts/footer.jsp" %>
