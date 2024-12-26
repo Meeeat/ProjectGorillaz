@@ -26,7 +26,7 @@ public class AdminServlet extends HttpServlet {
 
         String editUsername = req.getParameter("editUsername");
         if (editUsername != null && !editUsername.isEmpty()) {
-            User editUser = userService.login(editUsername, "no_password");
+            User editUser;
             editUser = userService.getUserRepository().findByUsername(editUsername);
             if (editUser == null) {
                 req.setAttribute("error", "Can't find user");
