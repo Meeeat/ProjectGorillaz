@@ -8,12 +8,7 @@ public class SessionUtil {
     private static final UserRepository userRepo = new UserRepository();
 
     public static QuestState getQuestState(HttpSession session) {
-        QuestState state = (QuestState) session.getAttribute("questState");
-        if (state == null) {
-            state = new QuestState("start", "start");
-            session.setAttribute("questState", state);
-        }
-        return state;
+        return (QuestState) session.getAttribute("questState");
     }
 
     public static void startQuest(HttpSession session, String questId) {
