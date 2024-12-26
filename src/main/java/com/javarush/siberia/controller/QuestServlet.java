@@ -78,7 +78,8 @@ public class QuestServlet extends HttpServlet {
             QuestStep nextStep = questService.getStep(state.getQuestId(), nextStepId);
             state.setCurrentStepId(nextStepId);
             if (nextStep.isEnd()) {
-                SessionUtil.incrementGamesPlayed(user.getUsername());
+                boolean victory = nextStep.isVictory();
+                SessionUtil.incrementStats(user.getUsername(), victory);
                 req.setAttribute("step", nextStep);
                 req.getRequestDispatcher("/WEB-INF/result.jsp").forward(req, resp);
                 return;

@@ -1,6 +1,7 @@
 package com.javarush.siberia.repository;
 
 import com.javarush.siberia.model.Role;
+import com.javarush.siberia.model.Stats;
 import com.javarush.siberia.model.User;
 
 import java.util.Collection;
@@ -9,15 +10,16 @@ import java.util.Map;
 
 public class UserRepository {
     private static final Map<String, User> USERS = new HashMap<>();
-    private static final Map<String,Integer> USER_STATS = new HashMap<>();
+    private static final Map<String, Stats> USER_STATS = new HashMap<>();
 
     static {
         USERS.put("admin", new User("admin", "admin", Role.ADMIN));
         USERS.put("author", new User("author", "author", Role.AUTHOR));
         USERS.put("user", new User("user", "user", Role.USER));
-        USER_STATS.put("admin",0);
-        USER_STATS.put("author",0);
-        USER_STATS.put("user",0);
+
+        USER_STATS.put("admin", new Stats());
+        USER_STATS.put("author", new Stats());
+        USER_STATS.put("user", new Stats());
     }
 
     public User findByUsername(String username) {
@@ -26,14 +28,23 @@ public class UserRepository {
 
     public void save(User user) {
         USERS.put(user.getUsername(), user);
-        USER_STATS.put(user.getUsername(),0);
+        USER_STATS.putIfAbsent(user.getUsername(), new Stats());
     }
 
-    public void incrementGamesPlayed(String username) {
-        USER_STATS.put(username, USER_STATS.getOrDefault(username,0)+1);
+    public void incrementStats(String username, boolean victory) {
+        Stats stats = USER_STATS.get(username);
+        if (stats == null) {
+            stats = new Stats();
+            USER_STATS.put(username, stats);
+        }
+        stats.increment(victory);
     }
 
-    public Map<String,Integer> getUserStats() {
+    public Stats getStats(String username) {
+        return USER_STATS.get(username);
+    }
+
+    public Map<String, Stats> getAllStats() {
         return USER_STATS;
     }
 
@@ -64,14 +75,8 @@ public class UserRepository {
         } else {
             USERS.remove(oldUsername);
 
-            int oldStats = USER_STATS.getOrDefault(oldUsername, 0);
-            USER_STATS.remove(oldUsername);
-
             User updatedUser = new User(newUsername, finalPassword, finalRole);
             USERS.put(newUsername, updatedUser);
-
-            int newStats = USER_STATS.getOrDefault(newUsername, 0);
-            USER_STATS.put(newUsername, oldStats + newStats);
 
             return true;
         }

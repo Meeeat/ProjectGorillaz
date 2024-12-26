@@ -1,5 +1,6 @@
 package com.javarush.siberia.controller;
 
+import com.javarush.siberia.model.Stats;
 import com.javarush.siberia.service.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -15,8 +16,8 @@ public class StatsServlet extends HttpServlet {
     private final UserService userService = new UserService();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Map<String,Integer> stats = userService.getUserRepository().getUserStats();
-        req.setAttribute("stats", stats);
+        Map<String, Stats> allStats = userService.getUserRepository().getAllStats();
+        req.setAttribute("allStats", allStats);
         req.getRequestDispatcher("/WEB-INF/stats.jsp").forward(req, resp);
     }
 }
