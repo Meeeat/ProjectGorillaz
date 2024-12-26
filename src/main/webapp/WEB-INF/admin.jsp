@@ -9,6 +9,7 @@
     String error = (String)request.getAttribute("error");
     request.setAttribute("title", "Админ-панель");
 %>
+
 <%@ include file="parts/header.jsp" %>
 
 <h1 class="mb-4">Админ-панель</h1>
@@ -22,35 +23,50 @@
 
 <h2 class="mb-3">Список пользователей</h2>
 <table class="table table-striped table-bordered">
-    <tr><th>Имя</th>
+    <thead>
+    <tr>
+        <th>Имя</th>
+        <th>Пароль</th>
         <th>Роль</th>
-        <th>Действия</th></tr>
+        <th>Действия</th>
+    </tr>
+    </thead>
+    <tbody>
     <% for (User u : users) { %>
     <tr>
         <td><%=u.getUsername()%></td>
+        <td>****</td>
         <td><%=u.getRole()%></td>
         <td>
-            <a href="admin?editUsername=<%=u.getUsername()%>" class="btn btn-sm btn-primary">Редактировать</a>
+            <a href="admin?editUsername=<%=u.getUsername()%>"
+               class="btn btn-sm btn-primary">Редактировать</a>
         </td>
     </tr>
     <% } %>
+    </tbody>
 </table>
 
 <% if (editUser != null) { %>
 <h2 class="mt-4">Редактирование пользователя: <%=editUser.getUsername()%></h2>
 <form method="post" action="admin">
-    <input type="hidden" name="username" value="<%=editUser.getUsername()%>">
+    <input type="hidden" name="oldUsername" value="<%=editUser.getUsername()%>">
+
     <div class="mb-3">
-        <label>Новый пароль (оставьте пустым, чтобы не менять):</label>
+        <label>Новое имя пользователя (если оставить пустым - не менять):</label>
+        <input type="text" name="newUsername"
+               class="form-control" placeholder="<%=editUser.getUsername()%>">
+    </div>
+    <div class="mb-3">
+        <label>Новый пароль (если оставить пустым - не менять):</label>
         <input type="password" name="newPassword" class="form-control">
     </div>
     <div class="mb-3">
-        <label>Новая роль:</label>
+        <label>Новая роль (если не выбрать - не менять):</label>
         <select name="newRole" class="form-select">
             <option value="">(не менять)</option>
-            <option value="USER" <%= editUser.getRole() == Role.USER ? "selected" : "" %>>USER</option>
-            <option value="AUTHOR" <%= editUser.getRole() == Role.AUTHOR ? "selected" : "" %>>AUTHOR</option>
-            <option value="ADMIN" <%= editUser.getRole() == Role.ADMIN ? "selected" : "" %>>ADMIN</option>
+            <option value="USER">USER</option>
+            <option value="AUTHOR">AUTHOR</option>
+            <option value="ADMIN">ADMIN</option>
         </select>
     </div>
     <input type="submit" value="Сохранить" class="btn btn-success">

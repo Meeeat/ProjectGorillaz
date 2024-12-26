@@ -49,19 +49,20 @@ public class AdminServlet extends HttpServlet {
             return;
         }
 
-        String username = req.getParameter("username");
+        String oldUsername = req.getParameter("oldUsername");
+        String newUsername = req.getParameter("newUsername");
         String newPassword = req.getParameter("newPassword");
-        String newRoleStr = req.getParameter("newRole");
+        String newRoleStr  = req.getParameter("newRole");
         Role newRole = null;
         if (newRoleStr != null && !newRoleStr.isEmpty()) {
             newRole = Role.valueOf(newRoleStr);
         }
 
-        boolean success = userService.getUserRepository().updateUser(username, newPassword, newRole);
+        boolean success = userService.getUserRepository().updateUser(oldUsername, newUsername, newPassword, newRole);
         if (success) {
-            req.setAttribute("message", "User data update successful");
+            req.setAttribute("message", "User update successful");
         } else {
-            req.setAttribute("error", "Can't update user data");
+            req.setAttribute("error", "Can't update user");
         }
 
         Collection<User> allUsers = userService.getUserRepository().getAllUsers();

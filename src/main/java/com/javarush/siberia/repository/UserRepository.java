@@ -41,13 +41,40 @@ public class UserRepository {
         return USERS.values();
     }
 
-    public boolean updateUser(String username, String newPassword, Role newRole) {
-        User user = USERS.get(username);
-        if (user == null) return false;
-        User updatedUser = new User(username, newPassword != null && !newPassword.isEmpty() ? newPassword : user.getPassword(),
-                newRole != null ? newRole : user.getRole());
-        USERS.put(username, updatedUser);
-        return true;
+    public boolean updateUser(String oldUsername, String newUsername, String newPassword, Role newRole) {
+        User oldUser = USERS.get(oldUsername);
+        if (oldUser == null) {
+            return false;
+        }
+
+        if (newUsername == null || newUsername.trim().isEmpty()) {
+            newUsername = oldUsername;
+        }
+
+        String finalPassword = (newPassword != null && !newPassword.isEmpty())
+                ? newPassword
+                : oldUser.getPassword();
+
+        Role finalRole = (newRole != null) ? newRole : oldUser.getRole();
+
+        if (newUsername.equals(oldUsername)) {
+            User updatedUser = new User(oldUsername, finalPassword, finalRole);
+            USERS.put(oldUsername, updatedUser);
+            return true;
+        } else {
+            USERS.remove(oldUsername);
+
+            int oldStats = USER_STATS.getOrDefault(oldUsername, 0);
+            USER_STATS.remove(oldUsername);
+
+            User updatedUser = new User(newUsername, finalPassword, finalRole);
+            USERS.put(newUsername, updatedUser);
+
+            int newStats = USER_STATS.getOrDefault(newUsername, 0);
+            USER_STATS.put(newUsername, oldStats + newStats);
+
+            return true;
+        }
     }
 
 }
