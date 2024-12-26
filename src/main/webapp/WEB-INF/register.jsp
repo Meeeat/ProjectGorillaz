@@ -17,14 +17,6 @@
         <label>Пароль:</label>
         <input type="password" name="password" class="form-control">
     </div>
-    <div class="mb-3">
-        <label>Роль:</label>
-        <select name="role" class="form-select">
-            <option value="USER">USER</option>
-            <option value="AUTHOR">AUTHOR</option>
-            <option value="ADMIN">ADMIN</option>
-        </select>
-    </div>
     <input type="submit" value="Зарегистрироваться" class="btn btn-primary">
 </form>
 <% if (error != null) { %>

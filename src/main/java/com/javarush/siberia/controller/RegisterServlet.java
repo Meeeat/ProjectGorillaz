@@ -23,9 +23,7 @@ public class RegisterServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String userName = req.getParameter("username");
         String password = req.getParameter("password");
-        String roleStr = req.getParameter("role");
-        Role role = Role.valueOf(roleStr);
-        boolean success = userService.register(userName, password, role);
+        boolean success = userService.register(userName, password, Role.USER);
         if (success) {
             resp.sendRedirect("login");
         } else {
