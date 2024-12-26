@@ -67,7 +67,7 @@ public class AdminServlet extends HttpServlet {
 
         Collection<User> allUsers = userService.getUserRepository().getAllUsers();
         req.setAttribute("users", allUsers);
-        req.setAttribute("title", "Admin-panel");
+        req.setAttribute("title", "Admin-panel ");
         req.getRequestDispatcher("/WEB-INF/admin.jsp").forward(req, resp);
     }
 

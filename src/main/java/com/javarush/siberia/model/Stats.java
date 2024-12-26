@@ -1,8 +1,10 @@
 package com.javarush.siberia.model;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter // i add setter for testing only
 public class Stats {
     private int total;
     private int wins;
