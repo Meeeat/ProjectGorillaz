@@ -1,6 +1,7 @@
 package com.javarush.siberia.controller;
 
 import com.javarush.siberia.model.Role;
+import com.javarush.siberia.model.User;
 import com.javarush.siberia.service.UserService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -21,11 +22,15 @@ public class RegisterServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String userName = req.getParameter("username");
+        String username = req.getParameter("username");
         String password = req.getParameter("password");
-        boolean success = userService.register(userName, password, Role.USER);
+        boolean success = userService.register(username, password, Role.USER);
         if (success) {
-            resp.sendRedirect("login");
+            User newUser = userService.login(username, password);
+            if (newUser != null) {
+                req.getSession().setAttribute("user", newUser);
+            }
+            resp.sendRedirect("/");
         } else {
             req.setAttribute("errorMessage", "User already exists or invalid input");
             req.getRequestDispatcher("/WEB-INF/register.jsp").forward(req, resp);
