@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.List"%>
 <%@ page import="com.javarush.siberia.model.User"%>
+<%@ page import="com.javarush.siberia.model.Role" %>
 
 <%
     User user = (User)session.getAttribute("user");
@@ -40,6 +41,10 @@
 
 <% if (loggedIn && (user.getRole().toString().equals("ADMIN") || user.getRole().toString().equals("AUTHOR"))) { %>
 <p><a href="office">Личный кабинет (создание квестов)</a></p>
+<% } %>
+
+<% if (loggedIn && user.getRole() == Role.ADMIN) { %>
+<a class="btn btn-danger mt-3" href="admin">Админ-панель (управление пользователями)</a>
 <% } %>
 
 <%@ include file="parts/footer.jsp" %>

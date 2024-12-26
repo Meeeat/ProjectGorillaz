@@ -21,6 +21,6 @@ public class AuthorServlet extends HttpServlet {
             return;
         }
         req.setAttribute("message", "Author panel - you can create new quests");
-        req.getRequestDispatcher("/WEB-INF/welcome.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/index.jsp").forward(req, resp);
     }
 }

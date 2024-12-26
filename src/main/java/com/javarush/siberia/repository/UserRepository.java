@@ -3,6 +3,7 @@ package com.javarush.siberia.repository;
 import com.javarush.siberia.model.Role;
 import com.javarush.siberia.model.User;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,6 +35,19 @@ public class UserRepository {
 
     public Map<String,Integer> getUserStats() {
         return USER_STATS;
+    }
+
+    public Collection<User> getAllUsers() {
+        return USERS.values();
+    }
+
+    public boolean updateUser(String username, String newPassword, Role newRole) {
+        User user = USERS.get(username);
+        if (user == null) return false;
+        User updatedUser = new User(username, newPassword != null && !newPassword.isEmpty() ? newPassword : user.getPassword(),
+                newRole != null ? newRole : user.getRole());
+        USERS.put(username, updatedUser);
+        return true;
     }
 
 }
