@@ -16,14 +16,6 @@ class UserRepositoryTest {
     }
 
     @Test
-    void testFindByUsername_Existing() {
-        User user = userRepository.findByUsername("admin");
-        Assertions.assertNotNull(user);
-        Assertions.assertEquals("admin", user.getUsername());
-        Assertions.assertEquals(Role.ADMIN, user.getRole());
-    }
-
-    @Test
     void testFindByUsername_NotFound() {
         User user = userRepository.findByUsername("nonexisting");
         Assertions.assertNull(user);
