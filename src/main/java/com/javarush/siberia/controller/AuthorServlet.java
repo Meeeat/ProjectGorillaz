@@ -1,7 +1,7 @@
 package com.javarush.siberia.controller;
 
-import com.javarush.siberia.model.Role;
-import com.javarush.siberia.model.User;
+import com.javarush.siberia.util.AppConstants;
+import com.javarush.siberia.util.SecurityUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -15,12 +15,10 @@ public class AuthorServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        User user = (User)req.getSession().getAttribute("user");
-        if (user == null || user.getRole() != Role.AUTHOR) {
-            resp.sendError(HttpServletResponse.SC_FORBIDDEN, "No access");
+        if (!SecurityUtil.checkAuthor(req, resp)) {
             return;
         }
-        req.setAttribute("message", "Author panel - you can create new quests");
-        req.getRequestDispatcher("/WEB-INF/index.jsp").forward(req, resp);
+        req.setAttribute(AppConstants.ATTR_MESSAGE, AppConstants.MESSAGE_AUTHOR_PANEL);
+        req.getRequestDispatcher(AppConstants.JSP_INDEX).forward(req, resp);
     }
 }
