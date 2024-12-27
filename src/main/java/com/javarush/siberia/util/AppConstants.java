@@ -2,18 +2,18 @@ package com.javarush.siberia.util;
 
 public final class AppConstants {
     // Errors and access
-    public static final String NO_ACCESS = "No access";
+    public static final String NO_ACCESS            = "No access";
     public static final String ERROR_CANT_FIND_USER = "Can't find user";
     public static final String ERROR_CANT_UPDATE_USER = "Can't update user";
-    public static final String ERROR_INVALID_CREDENTIALS = "Invalid username or password";
-    public static final String ERROR_USER_EXISTS = "User already exists or invalid input";
+    public static final String ERROR_INVALID_CRED   = "Invalid username or password";
+    public static final String ERROR_USER_EXISTS    = "User already exists or invalid input";
 
     // Success message
-    public static final String SUCCESS_USER_UPDATE = "User update successful";
+    public static final String SUCCESS_USER_UPDATE  = "User update successful";
     public static final String MESSAGE_AUTHOR_PANEL = "Author panel - you can create new quests";
 
     // Session and parameters
-    public static final String SESSION_USER = "user";
+    public static final String SESSION_USER         = "user";
     public static final String PARAM_EDIT_USERNAME  = "editUsername";
     public static final String PARAM_OLD_USERNAME   = "oldUsername";
     public static final String PARAM_NEW_USERNAME   = "newUsername";
@@ -51,7 +51,7 @@ public final class AppConstants {
     public static final String ATTR_RESULT_TITLE     = "Результат";
     public static final String ATTR_QUEST_MSG        = "Quest ";
     public static final String ATTR_CREATED_MSG      = " created!";
-    public static final String ATTR_STEP_MSG         = "Step !";
+    public static final String ATTR_STEP_MSG         = "Step ";
     public static final String ATTR_ADD_TO_QUEST_MSG = " added to quest ";
 
     // Quest param

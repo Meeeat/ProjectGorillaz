@@ -8,14 +8,14 @@ public class QuestStepTest {
     @Test
     public void testQuestStepFields() {
         QuestStep step = new QuestStep(
-                "Welcome to the dungeon",
-                "images/dungeon.jpg",
+                "Welcome to the jungle",
+                "images/jungle.jpg",
                 "Go left", "Go right",
                 "left", "right",
                 false, false
         );
-        Assertions.assertEquals("Welcome to the dungeon", step.getText());
-        Assertions.assertEquals("images/dungeon.jpg", step.getImagePath());
+        Assertions.assertEquals("Welcome to the jungle", step.getText());
+        Assertions.assertEquals("images/jungle.jpg", step.getImagePath());
         Assertions.assertEquals("Go left", step.getOption1());
         Assertions.assertEquals("Go right", step.getOption2());
         Assertions.assertEquals("left", step.getNextStepIfOption1());

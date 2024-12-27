@@ -33,7 +33,7 @@ public class LoginServlet extends HttpServlet {
             session.setAttribute(AppConstants.SESSION_USER, user);
             resp.sendRedirect("/");
         } else {
-            req.setAttribute(AppConstants.ATTR_ERROR_MESSAGE, AppConstants.ERROR_INVALID_CREDENTIALS);
+            req.setAttribute(AppConstants.ATTR_ERROR_MESSAGE, AppConstants.ERROR_INVALID_CRED);
             req.getRequestDispatcher(AppConstants.JSP_LOGIN).forward(req, resp);
         }
     }
