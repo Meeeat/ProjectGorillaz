@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name="IndexServlet", urlPatterns={"/"})
+@WebServlet(name="IndexServlet", urlPatterns={"/", "/index"})
 public class IndexServlet extends HttpServlet {
 
     private final QuestService questService = new QuestService();

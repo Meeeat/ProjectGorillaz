@@ -10,6 +10,7 @@
 
 <h2 class="mb-4">Квест</h2>
 <img src="<%=step.getImagePath()%>" alt="Image" class="img-fluid mb-3">
+
 <p class="fs-5"><%=step.getText()%></p>
 <form method="post" action="quest">
   <div class="mb-3">
