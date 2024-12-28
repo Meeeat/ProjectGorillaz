@@ -38,7 +38,7 @@
       Примеры: <code>start</code>, <code>north</code>, <code>caveEntrance</code>, <code>finalRoom</code> и т.п.
     </li>
     <li><b>Text</b> — описание происходящего на шаге. Показывается игроку.</li>
-    <li><b>Image Path</b> — путь к изображению (например, <code>images/step1.jpg</code>), если оно есть в папке <code>webapp/images</code>.</li>
+    <li><b>Image Path</b> — путь к изображению (например, <code>images/step1.jpg</code>), или <code>https://www.google.com/images/branding/googlelogo/1x/googlelogo_light_color_272x92dp.png</code></li>
     <li><b>Option 1 / Option 2</b> — названия двух вариантов действий.
       <ul>
         <li><code>Next step if option1</code> и <code>Next step if option2</code> — это ID шагов, куда попадёт игрок при выборе варианта.</li>
