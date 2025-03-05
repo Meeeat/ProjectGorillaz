@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="com.javarush.siberia.model.QuestStep"%>
+<%@ page import="java.util.Map" %>
 
 <%
   QuestStep step = (QuestStep)request.getAttribute("step");
@@ -14,16 +15,10 @@
 <p class="fs-5"><%=step.getText()%></p>
 <form method="post" action="quest">
   <div class="mb-3">
-    <% if (step.getOption1() != null) { %>
+    <% for (Map.Entry<String, String> option : step.getOptions().entrySet()) { %>
     <div class="form-check mb-2">
-      <input type="radio" class="form-check-input" name="choice" value="option1" checked>
-      <label class="form-check-label"><%=step.getOption1()%></label>
-    </div>
-    <% } %>
-    <% if (step.getOption2() != null) { %>
-    <div class="form-check mb-2">
-      <input type="radio" class="form-check-input" name="choice" value="option2">
-      <label class="form-check-label"><%=step.getOption2()%></label>
+      <input type="radio" class="form-check-input" name="choice" value="<%= option.getKey() %>">
+      <label class="form-check-label"><%= option.getKey() %></label>
     </div>
     <% } %>
   </div>

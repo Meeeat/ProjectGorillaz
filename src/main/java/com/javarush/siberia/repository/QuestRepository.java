@@ -10,54 +10,70 @@ public class QuestRepository {
 
     static {
         Map<String, QuestStep> defaultQuest = new HashMap<>();
+
+        Map<String, String> startOptions = new HashMap<>();
+        startOptions.put("На Север", "north");
+        startOptions.put("На Юг", "south");
         defaultQuest.put("start", new QuestStep(
                 "Вы находитесь в темном лесу. Куда пойдете?",
                 "images/step1.jpg",
-                "На Север", "На Юг",
-                "north", "south",
-                false, false
+                startOptions,
+                false,
+                false
         ));
+
+        Map<String, String> northOptions = new HashMap<>();
+        northOptions.put("Да, выпить", "drink");
+        northOptions.put("Нет, уйти", "ignore");
         defaultQuest.put("north", new QuestStep(
                 "Вы пришли к озеру. Выпьете воды?",
                 "images/step2_north.jpg",
-                "Да, выпить", "Нет, уйти",
-                "drink", "ignore",
-                false, false
+                northOptions,
+                false,
+                false
         ));
+
+        Map<String, String> southOptions = new HashMap<>();
+        southOptions.put("Сражаться", "fight");
+        southOptions.put("Убежать", "run");
         defaultQuest.put("south", new QuestStep(
                 "Вы встретили гоблина. Будете сражаться?",
                 "images/step2_south.jpg",
-                "Сражаться", "Убежать",
-                "fight", "run",
-                false, false
+                southOptions,
+                false,
+                false
         ));
+
         defaultQuest.put("drink", new QuestStep(
                 "Вода оказалась волшебной! Вы победили!",
                 "images/victory.jpg",
-                null, null,
-                null, null,
-                true, true
+                new HashMap<>(),
+                true,
+                true
         ));
+
         defaultQuest.put("ignore", new QuestStep(
                 "Вы ушли и заблудились. Поражение.",
                 "images/defeat.jpg",
-                null, null,
-                null, null,
-                true, false
+                new HashMap<>(),
+                true,
+                false
         ));
+
         defaultQuest.put("fight", new QuestStep(
                 "Гоблин оказался слаб. Вы победили!",
                 "images/victory.jpg",
-                null, null,
-                null, null,
-                true, true
+                new HashMap<>(),
+                true,
+                true
         ));
+
         defaultQuest.put("run", new QuestStep(
                 "Вы бежали так быстро, что упали в пропасть. Поражение.",
                 "images/defeat.jpg",
-                null, null,
-                null, null,
-                true, false
+                new HashMap<>(),
+                true,
+                false
         ));
 
         QUESTS.put("defaultQuest", defaultQuest);
@@ -76,11 +92,10 @@ public class QuestRepository {
     }
 
     public void addStep(String questId, String stepId, QuestStep step) {
-        QUESTS.computeIfAbsent(questId, k->new HashMap<>()).put(stepId, step);
+        QUESTS.computeIfAbsent(questId, k -> new HashMap<>()).put(stepId, step);
     }
 
     public Map<String, Map<String, QuestStep>> getAllQuests() {
         return QUESTS;
     }
-
 }

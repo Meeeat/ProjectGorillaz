@@ -5,6 +5,7 @@ import com.javarush.siberia.repository.QuestRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class QuestService {
     private final QuestRepository questRepo = new QuestRepository();
@@ -18,9 +19,8 @@ public class QuestService {
     }
 
     public void addStep(String questId, String stepId, String text, String imagePath,
-                        String option1, String option2, String next1, String next2,
-                        boolean isEnd, boolean isVictory) {
-        QuestStep step = new QuestStep(text, imagePath, option1, option2, next1, next2, isEnd, isVictory);
+                        Map<String, String> options, boolean isEnd, boolean isVictory) {
+        QuestStep step = new QuestStep(text, imagePath, options, isEnd, isVictory);
         questRepo.addStep(questId, stepId, step);
     }
 

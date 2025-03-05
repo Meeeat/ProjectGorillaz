@@ -68,12 +68,7 @@ public class QuestServlet extends HttpServlet {
         QuestStep currentStep = questService.getStep(state.getQuestId(), state.getCurrentStepId());
         String choice = req.getParameter(PARAM_CHOICE);
 
-        String nextStepId = null;
-        if ("option1".equals(choice)) {
-            nextStepId = currentStep.getNextStepIfOption1();
-        } else if ("option2".equals(choice)) {
-            nextStepId = currentStep.getNextStepIfOption2();
-        }
+        String nextStepId = currentStep.getOptions().get(choice);
 
         if (nextStepId != null) {
             QuestStep nextStep = questService.getStep(state.getQuestId(), nextStepId);
@@ -91,7 +86,7 @@ public class QuestServlet extends HttpServlet {
             }
         }
 
-        resp.sendRedirect("/quest");
+        resp.sendRedirect(WS_QUEST_URL);
     }
 
 }

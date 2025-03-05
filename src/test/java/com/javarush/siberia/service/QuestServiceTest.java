@@ -5,6 +5,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class QuestServiceTest {
 
     private QuestService questService;
@@ -30,10 +33,18 @@ public class QuestServiceTest {
     @Test
     void testAddQuest() {
         questService.addQuest("myQuest");
-        questService.addStep("myQuest", "start", "Begin", "images/start.png", "Go", null, "next", null, false, false);
+
+        Map<String, String> options = new HashMap<>();
+        options.put("Go", "next");
+
+        questService.addStep("myQuest", "start", "Begin", "images/start.png", options, false, false);
+
         QuestStep step = questService.getStep("myQuest", "start");
         Assertions.assertNotNull(step);
         Assertions.assertEquals("Begin", step.getText());
+        Assertions.assertEquals("images/start.png", step.getImagePath());
+        Assertions.assertEquals("next", step.getOptions().get("Go"));
+        Assertions.assertFalse(step.isEnd());
+        Assertions.assertFalse(step.isVictory());
     }
-
 }

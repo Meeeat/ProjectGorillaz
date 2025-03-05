@@ -8,6 +8,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.javarush.siberia.util.AppConstants.*;
 
@@ -34,28 +37,29 @@ public class OfficeServlet extends HttpServlet {
         if (ACTION_CREATE_QUEST.equals(action)) {
             String questId = req.getParameter(PARAM_QUEST_ID);
             questService.addQuest(questId);
-            req.setAttribute(ATTR_MESSAGE,
-                    ATTR_QUEST_MSG + questId + ATTR_CREATED_MSG);
+            req.setAttribute(ATTR_MESSAGE, ATTR_QUEST_MSG + questId + ATTR_CREATED_MSG);
         } else if (ACTION_ADD_STEP.equals(action)) {
             String questId = req.getParameter(PARAM_QUEST_ID);
-            String stepId  = req.getParameter(PARAM_STEP_ID);
-            String text    = req.getParameter(PARAM_TEXT);
+            String stepId = req.getParameter(PARAM_STEP_ID);
+            String text = req.getParameter(PARAM_TEXT);
             String imagePath = req.getParameter(PARAM_IMAGE_PATH);
-            String option1 = req.getParameter(PARAM_OPTION1);
-            String option2 = req.getParameter(PARAM_OPTION2);
-            String next1   = req.getParameter(PARAM_NEXT1);
-            String next2   = req.getParameter(PARAM_NEXT2);
 
-            boolean isEnd     = "on".equals(req.getParameter(PARAM_END));
-            boolean isVictory = "on".equals(req.getParameter(PARAM_VICTORY));
+            Map<String, String> options = new HashMap<>();
+            Enumeration<String> paramNames = req.getParameterNames();
+            while (paramNames.hasMoreElements()) {
+                String paramName = paramNames.nextElement();
+                if (paramName.startsWith(PARAM_OPTION)) {
+                    String optionText = req.getParameter(paramName);
+                    String nextStepId = req.getParameter(PARAM_NEXT + paramName.substring(PARAM_OPTION_INDEX));
+                    options.put(optionText, nextStepId);
+                }
+            }
 
-            questService.addStep(
-                    questId, stepId, text, imagePath,
-                    option1, option2, next1, next2,
-                    isEnd, isVictory
-            );
-            req.setAttribute(ATTR_MESSAGE,
-                    ATTR_STEP_MSG + stepId + ATTR_ADD_TO_QUEST_MSG + questId);
+            boolean isEnd = PARAM_CHECKBOX_ON.equals(req.getParameter(PARAM_END));
+            boolean isVictory = PARAM_CHECKBOX_ON.equals(req.getParameter(PARAM_VICTORY));
+
+            questService.addStep(questId, stepId, text, imagePath, options, isEnd, isVictory);
+            req.setAttribute(ATTR_MESSAGE, ATTR_STEP_MSG + stepId + ATTR_ADD_TO_QUEST_MSG + questId);
         }
         req.getRequestDispatcher(JSP_OFFICE).forward(req, resp);
     }

@@ -10,8 +10,12 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.mockito.Mockito.*;
 
 class QuestServletTest {
@@ -60,9 +64,15 @@ class QuestServletTest {
         when(session.getAttribute(AppConstants.SESSION_USER)).thenReturn(user);
         QuestState qs = new QuestState("defaultQuest", "start");
         when(session.getAttribute("questState")).thenReturn(qs);
-        QuestStep mockStep = new QuestStep("Text", "img.jpg", null, null, null, null, false, false);
+
+        Map<String, String> options = new HashMap<>();
+        options.put("Go left", "left");
+        options.put("Go right", "right");
+        QuestStep mockStep = new QuestStep("Text", "img.jpg", options, false, false);
+
         when(questServiceMock.getStep("defaultQuest", "start")).thenReturn(mockStep);
         servlet.doGet(request, response);
+
         verify(request).setAttribute(eq("step"), eq(mockStep));
         verify(dispatcher).forward(request, response);
     }
@@ -76,7 +86,7 @@ class QuestServletTest {
 
     @Test
     void doPost_NoQuestState_RedirectRoot() throws ServletException, IOException {
-        when(session.getAttribute(AppConstants.SESSION_USER)).thenReturn(new User("u","p",null));
+        when(session.getAttribute(AppConstants.SESSION_USER)).thenReturn(new User("u", "p", null));
         when(session.getAttribute("questState")).thenReturn(null);
         servlet.doPost(request, response);
         verify(response).sendRedirect("/");
@@ -88,15 +98,22 @@ class QuestServletTest {
         when(session.getAttribute(AppConstants.SESSION_USER)).thenReturn(user);
         QuestState qs = new QuestState("q1", "start");
         when(session.getAttribute("questState")).thenReturn(qs);
-        QuestStep currentStep = new QuestStep("current", "img.jpg", "option1", "option2", "stepVictory", "stepDefeat", false, false);
+
+        Map<String, String> currentOptions = new HashMap<>();
+        currentOptions.put("option1", "stepVictory");
+        currentOptions.put("option2", "stepDefeat");
+        QuestStep currentStep = new QuestStep("current", "img.jpg", currentOptions, false, false);
         when(questServiceMock.getStep("q1", "start")).thenReturn(currentStep);
+
         when(request.getParameter(AppConstants.PARAM_CHOICE)).thenReturn("option1");
-        QuestStep nextStep = new QuestStep("You win!", "win.jpg", null, null, null, null, true, true);
+
+        QuestStep nextStep = new QuestStep("You win!", "win.jpg", new HashMap<>(), true, true);
         when(questServiceMock.getStep("q1", "stepVictory")).thenReturn(nextStep);
+
         servlet.doPost(request, response);
+
         verify(questServiceMock).getStep("q1", "stepVictory");
         verify(request).setAttribute(eq("step"), eq(nextStep));
         verify(dispatcher).forward(request, response);
     }
-
 }
