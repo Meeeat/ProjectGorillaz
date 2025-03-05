@@ -1,6 +1,7 @@
 package com.javarush.siberia.util;
 
 public final class AppConstants {
+
     // Errors and access
     public static final String NO_ACCESS            = "No access";
     public static final String ERROR_CANT_FIND_USER = "Can't find user";
@@ -72,14 +73,16 @@ public final class AppConstants {
     public static final String PARAM_STEP_ID        = "stepId";
     public static final String PARAM_TEXT           = "text";
     public static final String PARAM_IMAGE_PATH     = "imagePath";
-    public static final String PARAM_OPTION1        = "option1";
-    public static final String PARAM_OPTION2        = "option2";
-    public static final String PARAM_NEXT1          = "next1";
-    public static final String PARAM_NEXT2          = "next2";
+    public static final String PARAM_OPTION         = "option_";
+    public static final String PARAM_NEXT           = "next_";
     public static final String PARAM_END            = "end";
     public static final String PARAM_VICTORY        = "victory";
+    public static final String PARAM_CHECKBOX_ON    = "on";
+    public static final int PARAM_OPTION_INDEX      = 7;
+
 
     private AppConstants() {
+        throw new UnsupportedOperationException("Utility class");
     }
 
 }
