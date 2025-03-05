@@ -3,7 +3,6 @@ package com.javarush.siberia.controller;
 import com.javarush.siberia.model.Role;
 import com.javarush.siberia.model.User;
 import com.javarush.siberia.service.UserService;
-import com.javarush.siberia.util.AppConstants;
 import com.javarush.siberia.util.SecurityUtil;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -13,7 +12,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collection;
 
-@WebServlet(name="AdminServlet", urlPatterns="/admin")
+import static com.javarush.siberia.util.AppConstants.*;
+
+@WebServlet(WS_ADMIN_URL)
 public class AdminServlet extends HttpServlet {
 
     private final UserService userService = new UserService();
@@ -24,21 +25,21 @@ public class AdminServlet extends HttpServlet {
             return;
         }
 
-        String editUsername = req.getParameter(AppConstants.PARAM_EDIT_USERNAME);
+        String editUsername = req.getParameter(PARAM_EDIT_USERNAME);
         if (editUsername != null && !editUsername.isEmpty()) {
             User editUser = userService.getUserRepository().findByUsername(editUsername);
             if (editUser == null) {
-                req.setAttribute(AppConstants.ATTR_ERROR, AppConstants.ERROR_CANT_FIND_USER);
+                req.setAttribute(ATTR_ERROR, ERROR_CANT_FIND_USER);
             } else {
-                req.setAttribute(AppConstants.ATTR_EDIT_USER, editUser);
+                req.setAttribute(ATTR_EDIT_USER, editUser);
             }
         }
 
         Collection<User> allUsers = userService.getUserRepository().getAllUsers();
-        req.setAttribute(AppConstants.ATTR_USERS, allUsers);
+        req.setAttribute(ATTR_USERS, allUsers);
 
-        req.setAttribute(AppConstants.ATTR_TITLE, AppConstants.ATTR_ADMIN_PANEL);
-        req.getRequestDispatcher(AppConstants.JSP_ADMIN).forward(req, resp);
+        req.setAttribute(ATTR_TITLE, ATTR_ADMIN_PANEL);
+        req.getRequestDispatcher(JSP_ADMIN).forward(req, resp);
     }
 
     @Override
@@ -48,10 +49,10 @@ public class AdminServlet extends HttpServlet {
             return;
         }
 
-        String oldUsername = req.getParameter(AppConstants.PARAM_OLD_USERNAME);
-        String newUsername = req.getParameter(AppConstants.PARAM_NEW_USERNAME);
-        String newPassword = req.getParameter(AppConstants.PARAM_NEW_PASSWORD);
-        String newRoleStr  = req.getParameter(AppConstants.PARAM_NEW_ROLE);
+        String oldUsername = req.getParameter(PARAM_OLD_USERNAME);
+        String newUsername = req.getParameter(PARAM_NEW_USERNAME);
+        String newPassword = req.getParameter(PARAM_NEW_PASSWORD);
+        String newRoleStr  = req.getParameter(PARAM_NEW_ROLE);
 
         Role newRole = null;
         if (newRoleStr != null && !newRoleStr.isEmpty()) {
@@ -60,15 +61,15 @@ public class AdminServlet extends HttpServlet {
 
         boolean success = userService.getUserRepository().updateUser(oldUsername, newUsername, newPassword, newRole);
         if (success) {
-            req.setAttribute(AppConstants.ATTR_MESSAGE, AppConstants.SUCCESS_USER_UPDATE);
+            req.setAttribute(ATTR_MESSAGE, SUCCESS_USER_UPDATE);
         } else {
-            req.setAttribute(AppConstants.ATTR_ERROR, AppConstants.ERROR_CANT_UPDATE_USER);
+            req.setAttribute(ATTR_ERROR, ERROR_CANT_UPDATE_USER);
         }
 
         Collection<User> allUsers = userService.getUserRepository().getAllUsers();
-        req.setAttribute(AppConstants.ATTR_USERS, allUsers);
-        req.setAttribute(AppConstants.ATTR_TITLE, AppConstants.ATTR_ADMIN_PANEL);
-        req.getRequestDispatcher(AppConstants.JSP_ADMIN).forward(req, resp);
+        req.setAttribute(ATTR_USERS, allUsers);
+        req.setAttribute(ATTR_TITLE, ATTR_ADMIN_PANEL);
+        req.getRequestDispatcher(JSP_ADMIN).forward(req, resp);
     }
 
 }

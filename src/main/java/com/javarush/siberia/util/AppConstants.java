@@ -35,6 +35,17 @@ public final class AppConstants {
     public static final String JSP_RESULT           = "/WEB-INF/result.jsp";
     public static final String JSP_STATS            = "/WEB-INF/stats.jsp";
 
+    // Servlet constants
+    public static final String WS_ADMIN_URL         = "/admin";
+    public static final String WS_AUTHOR_URL        = "/author";
+    public static final String WS_INDEX_URL         = "/index";
+    public static final String WS_LOGIN_URL         = "/login";
+    public static final String WS_LOGOUT_URL        = "/logout";
+    public static final String WS_OFFICE_URL        = "/office";
+    public static final String WS_QUEST_URL         = "/quest";
+    public static final String WS_REGISTER_URL      = "/register";
+    public static final String WS_STATS_URL         = "/stats";
+
     // Titles and Atr
     public static final String ATTR_TITLE            = "title";
     public static final String ATTR_MESSAGE          = "message";
