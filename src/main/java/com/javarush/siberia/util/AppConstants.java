@@ -8,6 +8,8 @@ public final class AppConstants {
     public static final String ERROR_CANT_UPDATE_USER = "Can't update user";
     public static final String ERROR_INVALID_CRED   = "Invalid username or password";
     public static final String ERROR_USER_EXISTS    = "User already exists or invalid input";
+    public static final String ERROR_UNKNOWN_ACTION = "Unknown action: ";
+    public static final String ERROR_OPERATION_FAILED = "Operation failed: ";
 
     // Success message
     public static final String SUCCESS_USER_UPDATE  = "User update successful";
@@ -47,7 +49,7 @@ public final class AppConstants {
     public static final String WS_REGISTER_URL      = "/register";
     public static final String WS_STATS_URL         = "/stats";
 
-    // Titles and Atr
+    // Titles and Attributes
     public static final String ATTR_TITLE            = "title";
     public static final String ATTR_MESSAGE          = "message";
     public static final String ATTR_ERROR            = "error";
@@ -61,12 +63,13 @@ public final class AppConstants {
     public static final String ATTR_MAIN_TITLE       = "Главная";
     public static final String ATTR_QUEST_TITLE      = "Квест";
     public static final String ATTR_RESULT_TITLE     = "Результат";
+    public static final String ATTR_OFFICE_TITLE     = "Личный кабинет";
     public static final String ATTR_QUEST_MSG        = "Quest ";
     public static final String ATTR_CREATED_MSG      = " created!";
     public static final String ATTR_STEP_MSG         = "Step ";
     public static final String ATTR_ADD_TO_QUEST_MSG = " added to quest ";
 
-    // Quest param
+    // Quest parameters
     public static final String PARAM_ACTION         = "action";
     public static final String ACTION_CREATE_QUEST  = "createQuest";
     public static final String ACTION_ADD_STEP      = "addStep";
@@ -80,9 +83,7 @@ public final class AppConstants {
     public static final String PARAM_CHECKBOX_ON    = "on";
     public static final int PARAM_OPTION_INDEX      = 7;
 
-
     private AppConstants() {
         throw new UnsupportedOperationException("Utility class");
     }
-
 }

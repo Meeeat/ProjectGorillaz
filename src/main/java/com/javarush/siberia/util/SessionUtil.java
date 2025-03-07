@@ -20,8 +20,8 @@ public class SessionUtil {
         session.removeAttribute("questState");
     }
 
-    public static void incrementStats(String username, boolean victory) {
-        userRepo.incrementStats(username, victory);
+    public static void incrementStats(Long userId, boolean victory) {
+        userRepo.incrementStats(userId, victory);
     }
 
 }

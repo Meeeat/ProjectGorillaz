@@ -47,6 +47,12 @@ public class QuestServlet extends HttpServlet {
         }
 
         QuestStep step = questService.getStep(state.getQuestId(), state.getCurrentStepId());
+        if (step == null) {
+            SessionUtil.resetQuestState(session);
+            resp.sendRedirect("/");
+            return;
+        }
+
         req.setAttribute(ATTR_STEP, step);
         req.setAttribute(ATTR_TITLE, ATTR_QUEST_TITLE);
         req.getRequestDispatcher(JSP_QUEST).forward(req, resp);
@@ -66,27 +72,37 @@ public class QuestServlet extends HttpServlet {
         }
 
         QuestStep currentStep = questService.getStep(state.getQuestId(), state.getCurrentStepId());
-        String choice = req.getParameter(PARAM_CHOICE);
+        if (currentStep == null) {
+            SessionUtil.resetQuestState(session);
+            resp.sendRedirect("/");
+            return;
+        }
 
+        String choice = req.getParameter(PARAM_CHOICE);
         String nextStepId = currentStep.getOptions().get(choice);
 
         if (nextStepId != null) {
             QuestStep nextStep = questService.getStep(state.getQuestId(), nextStepId);
-            state.setCurrentStepId(nextStepId);
-
-            if (nextStep.isEnd()) {
-                boolean victory = nextStep.isVictory();
-                User user = (User) session.getAttribute(SESSION_USER);
-                SessionUtil.incrementStats(user.getUsername(), victory);
-
-                req.setAttribute(ATTR_STEP, nextStep);
-                req.setAttribute(ATTR_TITLE, ATTR_RESULT_TITLE);
-                req.getRequestDispatcher(JSP_RESULT).forward(req, resp);
-                return;
+            if (nextStep != null) {
+                state.setCurrentStepId(nextStepId);
+                if (nextStep.isEnd()) {
+                    boolean victory = nextStep.isVictory();
+                    User user = (User) session.getAttribute(SESSION_USER);
+                    SessionUtil.incrementStats(user.getId(), victory);
+                    req.setAttribute(ATTR_STEP, nextStep);
+                    req.setAttribute(ATTR_TITLE, ATTR_RESULT_TITLE);
+                    req.getRequestDispatcher(JSP_RESULT).forward(req, resp);
+                } else {
+                    resp.sendRedirect(WS_QUEST_URL);
+                }
+            } else {
+                SessionUtil.resetQuestState(session);
+                resp.sendRedirect("/");
             }
+        } else {
+            req.setAttribute(ATTR_STEP, currentStep);
+            req.setAttribute(ATTR_ERROR, "Неверный выбор");
+            req.getRequestDispatcher(JSP_QUEST).forward(req, resp);
         }
-
-        resp.sendRedirect(WS_QUEST_URL);
     }
-
 }

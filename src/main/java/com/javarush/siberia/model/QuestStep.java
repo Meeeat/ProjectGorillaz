@@ -1,21 +1,39 @@
 package com.javarush.siberia.model;
 
+import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Map;
 
+@Entity
+@Table(name = "quest_steps", schema = "game")
 @Getter
+@Setter
 public class QuestStep {
-    private String text;
-    private String imagePath;
-    private Map<String, String> options;
-    private boolean isEnd;
-    private boolean isVictory;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "queststeps_id")
+    private Long id;
 
-    public QuestStep(String text, String imagePath, Map<String, String> options, boolean isEnd, boolean isVictory) {
-        this.text = text;
-        this.imagePath = imagePath;
-        this.options = options;
-        this.isEnd = isEnd;
-        this.isVictory = isVictory;
-    }
+    @ManyToOne
+    @JoinColumn(name = "quest_id", nullable = false)
+    private Quest quest;
+
+    @Column(name = "step_id", nullable = false)
+    private String stepId;
+
+    @Column(nullable = false)
+    private String text;
+
+    private String imagePath;
+
+    @Column(columnDefinition = "jsonb")
+    private Map<String, String> options;
+
+    @Column(name = "is_end", nullable = false)
+    private boolean isEnd;
+
+    @Column(name = "is_victory", nullable = false)
+    private boolean isVictory;
 }

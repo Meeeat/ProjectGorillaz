@@ -1,101 +1,60 @@
 package com.javarush.siberia.repository;
 
+import com.javarush.siberia.model.Quest;
 import com.javarush.siberia.model.QuestStep;
+import com.javarush.siberia.util.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 public class QuestRepository {
-    private static final Map<String, Map<String, QuestStep>> QUESTS = new HashMap<>();
+    public Quest findByTitle(String title) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
 
-    static {
-        Map<String, QuestStep> defaultQuest = new HashMap<>();
+            String hql = "FROM Quest WHERE title = :title";
 
-        Map<String, String> startOptions = new HashMap<>();
-        startOptions.put("На Север", "north");
-        startOptions.put("На Юг", "south");
-        defaultQuest.put("start", new QuestStep(
-                "Вы находитесь в темном лесу. Куда пойдете?",
-                "images/step1.jpg",
-                startOptions,
-                false,
-                false
-        ));
-
-        Map<String, String> northOptions = new HashMap<>();
-        northOptions.put("Да, выпить", "drink");
-        northOptions.put("Нет, уйти", "ignore");
-        defaultQuest.put("north", new QuestStep(
-                "Вы пришли к озеру. Выпьете воды?",
-                "images/step2_north.jpg",
-                northOptions,
-                false,
-                false
-        ));
-
-        Map<String, String> southOptions = new HashMap<>();
-        southOptions.put("Сражаться", "fight");
-        southOptions.put("Убежать", "run");
-        defaultQuest.put("south", new QuestStep(
-                "Вы встретили гоблина. Будете сражаться?",
-                "images/step2_south.jpg",
-                southOptions,
-                false,
-                false
-        ));
-
-        defaultQuest.put("drink", new QuestStep(
-                "Вода оказалась волшебной! Вы победили!",
-                "images/victory.jpg",
-                new HashMap<>(),
-                true,
-                true
-        ));
-
-        defaultQuest.put("ignore", new QuestStep(
-                "Вы ушли и заблудились. Поражение.",
-                "images/defeat.jpg",
-                new HashMap<>(),
-                true,
-                false
-        ));
-
-        defaultQuest.put("fight", new QuestStep(
-                "Гоблин оказался слаб. Вы победили!",
-                "images/victory.jpg",
-                new HashMap<>(),
-                true,
-                true
-        ));
-
-        defaultQuest.put("run", new QuestStep(
-                "Вы бежали так быстро, что упали в пропасть. Поражение.",
-                "images/defeat.jpg",
-                new HashMap<>(),
-                true,
-                false
-        ));
-
-        QUESTS.put("defaultQuest", defaultQuest);
-    }
-
-    public QuestStep getStep(String questId, String stepId) {
-        Map<String, QuestStep> steps = QUESTS.get(questId);
-        if (steps == null) return null;
-        return steps.get(stepId);
-    }
-
-    public void addQuest(String questId) {
-        if (!QUESTS.containsKey(questId)) {
-            QUESTS.put(questId, new HashMap<>());
+            return session.createQuery(hql, Quest.class)
+                    .setParameter("title", title)
+                    .uniqueResult();
         }
     }
 
-    public void addStep(String questId, String stepId, QuestStep step) {
-        QUESTS.computeIfAbsent(questId, k -> new HashMap<>()).put(stepId, step);
+    public QuestStep getStep(String questTitle, String stepId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+
+            String hql = "FROM QuestStep WHERE quest.title = :questTitle AND stepId = :stepId";
+
+            return session.createQuery(hql, QuestStep.class)
+                    .setParameter("questTitle", questTitle)
+                    .setParameter("stepId", stepId)
+                    .uniqueResult();
+        }
     }
 
-    public Map<String, Map<String, QuestStep>> getAllQuests() {
-        return QUESTS;
+    public void saveQuest(Quest quest) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction tx = session.beginTransaction();
+            session.persist(quest);
+            tx.commit();
+        }
     }
+
+    public void saveStep(QuestStep step) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            Transaction tx = session.beginTransaction();
+            session.persist(step);
+            tx.commit();
+        }
+    }
+
+    public List<Quest> getAllQuests() {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+
+            String hql = "FROM Quest";
+
+            return session.createQuery(hql, Quest.class).list();
+        }
+    }
+
 }

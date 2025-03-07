@@ -19,7 +19,7 @@ public class StatsServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Map<String, Stats> allStats = userService.getUserRepository().getAllStats();
+        Map<String, Stats> allStats = userService.getAllStats();
         req.setAttribute("allStats", allStats);
         req.getRequestDispatcher(JSP_STATS).forward(req, resp);
     }

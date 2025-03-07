@@ -1,16 +1,26 @@
 package com.javarush.siberia.model;
 
+import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
+@Entity
+@Table(name = "users", schema = "game")
 @Getter
+@Setter
 public class User {
-    private String username;
-    private String password;
-    private Role role;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
+    private Long id;
 
-    public User(String username, String password, Role role) {
-        this.username = username;
-        this.password = password;
-        this.role = role;
-    }
+    @Column(nullable = false, unique = true)
+    private String username;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role;
 }

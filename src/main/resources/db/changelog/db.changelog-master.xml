@@ -5,5 +5,181 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
 
-    <include file="db/changelog/db.changelog-1.0.xml" relativeToChangelogFile="true"/>
+    <!-- Создание схемы game -->
+    <changeSet id="1" author="siberia" runOnChange="true">
+        <sql dbms="postgresql">
+            CREATE SCHEMA IF NOT EXISTS game;
+        </sql>
+    </changeSet>
+
+    <!-- Создание таблицы users -->
+    <changeSet id="2" author="siberia" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists schemaName="game" tableName="users"/>
+            </not>
+        </preConditions>
+        <createTable tableName="users" schemaName="game">
+            <column name="user_id" type="BIGSERIAL" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="username" type="VARCHAR(255)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- Создание таблицы quests -->
+    <changeSet id="3" author="siberia" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists schemaName="game" tableName="quests"/>
+            </not>
+        </preConditions>
+        <createTable tableName="quests" schemaName="game">
+            <column name="quest_id" type="BIGSERIAL" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="title" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="author_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableSchemaName="game" baseTableName="quests"
+                                 baseColumnNames="author_id"
+                                 referencedTableSchemaName="game" referencedTableName="users"
+                                 referencedColumnNames="user_id"
+                                 constraintName="fk_quests_users"/>
+    </changeSet>
+
+    <!-- Создание таблицы quest_steps -->
+    <changeSet id="4" author="siberia" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists schemaName="game" tableName="quest_steps"/>
+            </not>
+        </preConditions>
+        <createTable tableName="quest_steps" schemaName="game">
+            <column name="queststeps_id" type="BIGSERIAL" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="quest_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="step_id" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="text" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="image_path" type="VARCHAR(255)"/>
+            <column name="options" type="JSONB"/>
+            <column name="is_end" type="BOOLEAN" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_victory" type="BOOLEAN" defaultValue="false">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableSchemaName="game" baseTableName="quest_steps"
+                                 baseColumnNames="quest_id"
+                                 referencedTableSchemaName="game" referencedTableName="quests"
+                                 referencedColumnNames="quest_id"
+                                 constraintName="fk_quest_steps_quests"/>
+        <addUniqueConstraint tableName="quest_steps" schemaName="game"
+                             columnNames="quest_id, step_id" constraintName="uq_quest_steps_quest_step"/>
+    </changeSet>
+
+    <!-- Создание таблицы user_stats -->
+    <changeSet id="5" author="siberia" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists schemaName="game" tableName="user_stats"/>
+            </not>
+        </preConditions>
+        <createTable tableName="user_stats" schemaName="game">
+            <column name="userstats_id" type="BIGSERIAL" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="total_games" type="INTEGER" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="wins" type="INTEGER" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+            <column name="losses" type="INTEGER" defaultValue="0">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseTableSchemaName="game" baseTableName="user_stats"
+                                 baseColumnNames="user_id"
+                                 referencedTableSchemaName="game" referencedTableName="users"
+                                 referencedColumnNames="user_id"
+                                 constraintName="fk_user_stats_users"/>
+    </changeSet>
+
+    <!-- Начальные данные для users -->
+    <changeSet id="6" author="siberia" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM game.users
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="users" schemaName="game">
+            <column name="username" value="admin"/>
+            <column name="password" value="admin"/>
+            <column name="role" value="ADMIN"/>
+        </insert>
+        <insert tableName="users" schemaName="game">
+            <column name="username" value="author"/>
+            <column name="password" value="author"/>
+            <column name="role" value="AUTHOR"/>
+        </insert>
+        <insert tableName="users" schemaName="game">
+            <column name="username" value="user"/>
+            <column name="password" value="user"/>
+            <column name="role" value="USER"/>
+        </insert>
+    </changeSet>
+
+    <!-- Начальные данные для user_stats -->
+    <changeSet id="7" author="siberia" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM game.user_stats
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="user_stats" schemaName="game">
+            <column name="user_id" value="1"/>
+            <column name="total_games" value="0"/>
+            <column name="wins" value="0"/>
+            <column name="losses" value="0"/>
+        </insert>
+        <insert tableName="user_stats" schemaName="game">
+            <column name="user_id" value="2"/>
+            <column name="total_games" value="0"/>
+            <column name="wins" value="0"/>
+            <column name="losses" value="0"/>
+        </insert>
+        <insert tableName="user_stats" schemaName="game">
+            <column name="user_id" value="3"/>
+            <column name="total_games" value="0"/>
+            <column name="wins" value="0"/>
+            <column name="losses" value="0"/>
+        </insert>
+    </changeSet>
 </databaseChangeLog>

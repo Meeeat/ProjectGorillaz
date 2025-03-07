@@ -41,7 +41,7 @@ public class ApplicationProperties extends Properties {
                     strValue = valueParts[1];
                 }
                 String keyEnvironmentVariable = valueParts[0];
-                String valueEnvironmentVariable = System.getProperties().getProperty(keyEnvironmentVariable);
+                String valueEnvironmentVariable = System.getenv(keyEnvironmentVariable);
                 if (keyEnvironmentVariable != null && valueEnvironmentVariable != null) {
                     strValue = valueEnvironmentVariable;
                 }
@@ -55,4 +55,6 @@ public class ApplicationProperties extends Properties {
                     ApplicationProperties.class.getResource("/")
             ).toString()));
 
+    //only in Tomcat (not use in tests)
+    public final static Path WEB_INF = CLASSES_ROOT.getParent();
 }

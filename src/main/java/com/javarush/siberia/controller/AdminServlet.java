@@ -27,7 +27,7 @@ public class AdminServlet extends HttpServlet {
 
         String editUsername = req.getParameter(PARAM_EDIT_USERNAME);
         if (editUsername != null && !editUsername.isEmpty()) {
-            User editUser = userService.getUserRepository().findByUsername(editUsername);
+            User editUser = userService.login(editUsername, null);
             if (editUser == null) {
                 req.setAttribute(ATTR_ERROR, ERROR_CANT_FIND_USER);
             } else {
@@ -35,7 +35,7 @@ public class AdminServlet extends HttpServlet {
             }
         }
 
-        Collection<User> allUsers = userService.getUserRepository().getAllUsers();
+        Collection<User> allUsers = userService.getAllUsers();
         req.setAttribute(ATTR_USERS, allUsers);
 
         req.setAttribute(ATTR_TITLE, ATTR_ADMIN_PANEL);
@@ -44,7 +44,6 @@ public class AdminServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         if (!SecurityUtil.checkAdmin(req, resp)) {
             return;
         }
@@ -59,17 +58,16 @@ public class AdminServlet extends HttpServlet {
             newRole = Role.valueOf(newRoleStr);
         }
 
-        boolean success = userService.getUserRepository().updateUser(oldUsername, newUsername, newPassword, newRole);
+        boolean success = userService.updateUser(oldUsername, newUsername, newPassword, newRole);
         if (success) {
             req.setAttribute(ATTR_MESSAGE, SUCCESS_USER_UPDATE);
         } else {
             req.setAttribute(ATTR_ERROR, ERROR_CANT_UPDATE_USER);
         }
 
-        Collection<User> allUsers = userService.getUserRepository().getAllUsers();
+        Collection<User> allUsers = userService.getAllUsers();
         req.setAttribute(ATTR_USERS, allUsers);
         req.setAttribute(ATTR_TITLE, ATTR_ADMIN_PANEL);
         req.getRequestDispatcher(JSP_ADMIN).forward(req, resp);
     }
-
 }
