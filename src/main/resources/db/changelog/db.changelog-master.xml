@@ -5,14 +5,12 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
 
-    <!-- Создание схемы game -->
     <changeSet id="1" author="siberia" runOnChange="true">
         <sql dbms="postgresql">
             CREATE SCHEMA IF NOT EXISTS game;
         </sql>
     </changeSet>
 
-    <!-- Создание таблицы users -->
     <changeSet id="2" author="siberia" runOnChange="true">
         <preConditions onFail="MARK_RAN">
             <not>
@@ -35,7 +33,6 @@
         </createTable>
     </changeSet>
 
-    <!-- Создание таблицы quests -->
     <changeSet id="3" author="siberia" runOnChange="true">
         <preConditions onFail="MARK_RAN">
             <not>
@@ -63,7 +60,6 @@
                                  constraintName="fk_quests_users"/>
     </changeSet>
 
-    <!-- Создание таблицы quest_steps -->
     <changeSet id="4" author="siberia" runOnChange="true">
         <preConditions onFail="MARK_RAN">
             <not>
@@ -101,7 +97,6 @@
                              columnNames="quest_id, step_id" constraintName="uq_quest_steps_quest_step"/>
     </changeSet>
 
-    <!-- Создание таблицы user_stats -->
     <changeSet id="5" author="siberia" runOnChange="true">
         <preConditions onFail="MARK_RAN">
             <not>
@@ -132,7 +127,6 @@
                                  constraintName="fk_user_stats_users"/>
     </changeSet>
 
-    <!-- Начальные данные для users -->
     <changeSet id="6" author="siberia" runOnChange="true">
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="0">
@@ -156,7 +150,6 @@
         </insert>
     </changeSet>
 
-    <!-- Начальные данные для user_stats -->
     <changeSet id="7" author="siberia" runOnChange="true">
         <preConditions onFail="MARK_RAN">
             <sqlCheck expectedResult="0">

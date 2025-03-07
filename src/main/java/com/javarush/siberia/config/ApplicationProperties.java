@@ -3,6 +3,7 @@ package com.javarush.siberia.config;
 import lombok.SneakyThrows;
 
 import java.io.FileReader;
+import java.io.InputStream;
 import java.net.URI;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -18,7 +19,10 @@ public class ApplicationProperties extends Properties {
 
     @SneakyThrows
     public ApplicationProperties() {
-        this.load(new FileReader(CLASSES_ROOT + "/application.properties"));
+        //this.load(new FileReader(CLASSES_ROOT + "/application.properties"));
+        try (InputStream input = getClass().getClassLoader().getResourceAsStream("application.properties")) {
+            this.load(input);
+        }
         injectEnvironmentVariables();
         try {
             String driver = this.getProperty(HIBERNATE_CONNECTION_DRIVER_CLASS);

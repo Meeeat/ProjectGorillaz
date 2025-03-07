@@ -28,7 +28,7 @@ public class LiquibaseInitializer implements ServletContextListener {
                     database);
             liquibase.update("");
         } catch (Exception e) {
-            throw new RuntimeException("Не удалось запустить Liquibase", e);
+            throw new RuntimeException("can't run Liquibase", e);
         }
     }
 

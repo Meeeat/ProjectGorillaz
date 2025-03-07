@@ -12,7 +12,9 @@ import java.util.List;
 public class UserRepository {
     public User findByUsername(String username) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+
             String hql = "FROM User WHERE username = :username";
+
             return session.createQuery(hql, User.class)
                     .setParameter("username", username)
                     .uniqueResult();
@@ -50,14 +52,18 @@ public class UserRepository {
 
     public List<User> getAllUsers() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+
             String hql = "FROM User";
+
             return session.createQuery(hql, User.class).list();
         }
     }
 
     public UserStats getStats(Long userId) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+
             String hql = "FROM UserStats WHERE user.id = :userId";
+
             return session.createQuery(hql, UserStats.class)
                     .setParameter("userId", userId)
                     .uniqueResult();
@@ -78,7 +84,9 @@ public class UserRepository {
 
     public List<UserStats> getAllStats() {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+
             String hql = "FROM UserStats";
+
             return session.createQuery(hql, UserStats.class).list();
         }
     }
