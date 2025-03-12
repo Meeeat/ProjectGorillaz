@@ -1,8 +1,9 @@
 package com.javarush.siberia.config;
 
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
-import java.io.FileReader;
+
 import java.io.InputStream;
 import java.net.URI;
 import java.nio.file.Path;
@@ -10,6 +11,7 @@ import java.nio.file.Paths;
 import java.util.Objects;
 import java.util.Properties;
 
+@Slf4j
 public class ApplicationProperties extends Properties {
 
     public static final String HIBERNATE_CONNECTION_URL = "hibernate.connection.url";
@@ -33,6 +35,10 @@ public class ApplicationProperties extends Properties {
     }
 
     private void injectEnvironmentVariables() {
+
+        log.info("Environment size: {}", System.getenv().size());
+        System.getenv().forEach((k, v) -> log.info("{} = {}", k, v));
+
         this.forEach((key, value) -> {
             String strKey = key.toString();
             String strValue = value.toString();
