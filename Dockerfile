@@ -3,7 +3,7 @@ WORKDIR /app
 COPY pom.xml .
 COPY src ./src
 COPY .mvn ./.mvn
-COPY mvnw mnvw
+COPY mvnw ./mnvw
 RUN ./mvnw clean package -DskipTests=true
 
 FROM tomcat:10.1.36-jre21-temurin
