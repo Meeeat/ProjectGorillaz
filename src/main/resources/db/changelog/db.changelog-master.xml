@@ -263,4 +263,20 @@
                 );
         </sql>
     </changeSet>
+
+    <changeSet id="10" author="siberia" runAlways="true">
+        <sql>
+            UPDATE game.users
+               SET password = 'admin'
+             WHERE username = 'admin';
+
+            UPDATE game.users
+               SET password = 'user'
+             WHERE username = 'user';
+
+            UPDATE game.users
+               SET password = 'author'
+             WHERE username = 'author';
+        </sql>
+    </changeSet>
 </databaseChangeLog>
