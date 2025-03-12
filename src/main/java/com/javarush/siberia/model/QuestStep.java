@@ -1,5 +1,6 @@
 package com.javarush.siberia.model;
 
+import com.javarush.siberia.model.converter.JsonbType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,9 +27,11 @@ public class QuestStep {
     @Column(nullable = false)
     private String text;
 
+    @Column(name = "image_path")
     private String imagePath;
 
     @Column(columnDefinition = "jsonb")
+    @Convert(converter = JsonbType.class)
     private Map<String, String> options;
 
     @Column(name = "is_end", nullable = false)
