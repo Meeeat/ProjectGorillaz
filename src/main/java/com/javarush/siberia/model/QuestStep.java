@@ -1,6 +1,5 @@
 package com.javarush.siberia.model;
 
-import com.javarush.siberia.model.converter.JsonbType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
