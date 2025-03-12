@@ -27,9 +27,9 @@
     %>
     <tr>
         <td><%= username %></td>
-        <td><%= stats.getTotal() %></td>
-        <td><%= stats.getWins() %></td>
-        <td><%= stats.getLosses() %></td>
+        <td><%= stats.total() %></td>
+        <td><%= stats.wins() %></td>
+        <td><%= stats.losses() %></td>
     </tr>
     <%
             }
