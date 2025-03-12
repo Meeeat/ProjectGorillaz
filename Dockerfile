@@ -4,6 +4,7 @@ COPY pom.xml .
 COPY src ./src
 COPY .mvn ./.mvn
 COPY mvnw mvnw
+RUN chmod +x ./mvnw
 RUN ./mvnw clean package -DskipTests=true
 
 FROM tomcat:10.1.36-jre21-temurin
