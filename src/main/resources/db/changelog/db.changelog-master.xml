@@ -175,4 +175,92 @@
             <column name="losses" value="0"/>
         </insert>
     </changeSet>
+
+    <changeSet id="8" author="siberia" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM game.quests WHERE title = 'defaultQuest'
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="quests" schemaName="game">
+            <column name="title" value="defaultQuest"/>
+            <column name="author_id" value="2"/>
+            <column name="created_at" valueComputed="CURRENT_TIMESTAMP"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="9" author="siberia" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM game.quest_steps WHERE quest_id = (SELECT quest_id FROM game.quests WHERE title = 'defaultQuest')
+            </sqlCheck>
+        </preConditions>
+        <sql>
+            INSERT INTO game.quest_steps (quest_id, step_id, text, image_path, options, is_end, is_victory)
+            VALUES
+                (
+                        (SELECT quest_id FROM game.quests WHERE title = 'defaultQuest'),
+                        'start',
+                        'Вы находитесь в темном лесу. Куда пойдете?',
+                        'images/step1.jpg',
+                        '{"На Север": "north", "На Юг": "south"}',
+                        false,
+                        false
+                ),
+                (
+                        (SELECT quest_id FROM game.quests WHERE title = 'defaultQuest'),
+                        'north',
+                        'Вы пришли к озеру. Выпьете воды?',
+                        'images/step2_north.jpg',
+                        '{"Да, выпить": "drink", "Нет, уйти": "ignore"}',
+                        false,
+                        false
+                ),
+                (
+                        (SELECT quest_id FROM game.quests WHERE title = 'defaultQuest'),
+                        'south',
+                        'Вы встретили гоблина. Будете сражаться?',
+                        'images/step2_south.jpg',
+                        '{"Сражаться": "fight", "Убежать": "run"}',
+                        false,
+                        false
+                ),
+                (
+                        (SELECT quest_id FROM game.quests WHERE title = 'defaultQuest'),
+                        'drink',
+                        'Вода оказалась волшебной! Вы победили!',
+                        'images/victory.jpg',
+                        '{}',
+                        true,
+                        true
+                ),
+                (
+                        (SELECT quest_id FROM game.quests WHERE title = 'defaultQuest'),
+                        'ignore',
+                        'Вы ушли и заблудились. Поражение.',
+                        'images/defeat.jpg',
+                        '{}',
+                        true,
+                        false
+                ),
+                (
+                        (SELECT quest_id FROM game.quests WHERE title = 'defaultQuest'),
+                        'fight',
+                        'Гоблин оказался слаб. Вы победили!',
+                        'images/victory.jpg',
+                        '{}',
+                        true,
+                        true
+                ),
+                (
+                        (SELECT quest_id FROM game.quests WHERE title = 'defaultQuest'),
+                        'run',
+                        'Вы бежали так быстро, что упали в пропасть. Поражение.',
+                        'images/defeat.jpg',
+                        '{}',
+                        true,
+                        false
+                );
+        </sql>
+    </changeSet>
 </databaseChangeLog>

@@ -4,6 +4,8 @@ import com.javarush.siberia.model.converter.JsonbType;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.util.Map;
 
@@ -31,7 +33,7 @@ public class QuestStep {
     private String imagePath;
 
     @Column(columnDefinition = "jsonb")
-    @Convert(converter = JsonbType.class)
+    @JdbcTypeCode(SqlTypes.JSON)
     private Map<String, String> options;
 
     @Column(name = "is_end", nullable = false)
