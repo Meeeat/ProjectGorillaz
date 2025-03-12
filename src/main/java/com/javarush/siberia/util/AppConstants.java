@@ -10,8 +10,8 @@ public final class AppConstants {
     public static final String ERROR_USER_EXISTS    = "User already exists or invalid input";
     public static final String ERROR_UNKNOWN_ACTION = "Unknown action: ";
     public static final String ERROR_OPERATION_FAILED = "Operation failed: ";
-    public static final String ERROR_UNABLE_TO_JSONB = "Unable to convert Map to JSONB";
-    public static final String ERROR_UNABLE_TO_MAP  = "Unable to convert JSONB to Map";
+    public static final String ERROR_MISTAKE = "Wrong choose";
+
 
     // Success message
     public static final String SUCCESS_USER_UPDATE  = "User update successful";

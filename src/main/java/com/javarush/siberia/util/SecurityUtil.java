@@ -6,6 +6,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.javarush.siberia.util.AppConstants.WS_LOGIN_URL;
+
 public final class SecurityUtil {
     private SecurityUtil() {}
 
@@ -29,7 +31,11 @@ public final class SecurityUtil {
 
     public static boolean checkAdminOrAuthor(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         User user = (User) req.getSession().getAttribute(AppConstants.SESSION_USER);
-        if (user == null || (user.getRole() != Role.ADMIN && user.getRole() != Role.AUTHOR)) {
+        if (user == null) {
+            resp.sendRedirect(WS_LOGIN_URL);
+            return false;
+        }
+        if (user.getRole() != Role.ADMIN && user.getRole() != Role.AUTHOR) {
             resp.sendError(HttpServletResponse.SC_FORBIDDEN, AppConstants.NO_ACCESS);
             return false;
         }
@@ -39,10 +45,9 @@ public final class SecurityUtil {
     public static boolean checkLoggedIn(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         User user = (User) req.getSession().getAttribute(AppConstants.SESSION_USER);
         if (user == null) {
-            resp.sendRedirect("/login");
+            resp.sendRedirect(WS_LOGIN_URL);
             return false;
         }
         return true;
     }
-
 }

@@ -101,7 +101,7 @@ public class QuestServlet extends HttpServlet {
             }
         } else {
             req.setAttribute(ATTR_STEP, currentStep);
-            req.setAttribute(ATTR_ERROR, "Неверный выбор");
+            req.setAttribute(ATTR_ERROR, ERROR_MISTAKE);
             req.getRequestDispatcher(JSP_QUEST).forward(req, resp);
         }
     }
